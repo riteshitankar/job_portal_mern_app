@@ -5,11 +5,10 @@ import jwt from 'jsonwebtoken'
 import { redisClient } from '../utils/redisClient.js'
 import { userModel } from '../models/userSchema.js'
 
-
 dotenv.config({ path: "./config.env" })
 
 
-// for sending otp mail using gmail
+// for sending otp mail using gmail for new registration
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',   // Gmail SMTP
     port: 465,                // 465 for SSL, 587 for STARTTLS
@@ -20,11 +19,12 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-
+// create random number
 function generateRandomNumber() {
     return Math.floor((Math.random() * 9000) + 1000)
 }
 
+// send otp for registration using created random number
 async function sendOTP(email) {
     try {
         let otp = generateRandomNumber()
@@ -47,7 +47,27 @@ async function sendOTP(email) {
     }
 }
 
+// send OTP for new password reset
+async function sendOTPForPasswordReset(email) {
+    try {
+        let otp = generateRandomNumber()
+        let emailOptions = {
+            from: process.env.USER_EMAIL,
+            to: email,
+            subject: "Password Reset Request",
+            html: `<h1 style="font-weight:normal;font-style:italic">Your OTP is <b>${otp}</b>. It is valid for 5 minutes. <u>Use this OTP to reset your password</u>.</h1>`
+        }
+        await transporter.sendMail(emailOptions)
+        await redisClient.setEx(`emailPasswordReset:${email}`, 300, otp.toString())
 
+        return { message: 'OTP send successfully!', status: true }
+    } catch (err) {
+        console.log('Error sending otp for password reset :', err)
+        return { message: 'Unable to send OTP!', status: false }
+    }
+}
+
+// user registration
 let handleUserRegister = async (req, res) => {
     try {
         let { name, phone, email, address, dob, password, qualifications } = req.body
@@ -85,10 +105,11 @@ let handleUserRegister = async (req, res) => {
 
     } catch (err) {
         console.log("error while registering user : ", err)
-        res.status(400).json({ message: "unable to register user !", err })
+        res.status(400).json({ message: "Unable to register user !", err })
     }
 }
 
+// email otp verification
 let handleOTPVerification = async (req, res) => {
     try {
         let { email, userOtp } = req.body
@@ -128,7 +149,7 @@ let handleOTPVerification = async (req, res) => {
     }
 }
 
-
+//user login 
 let handleUserLogin = async (req, res) => {
     try {
         let { email, password } = req.body
@@ -136,25 +157,67 @@ let handleUserLogin = async (req, res) => {
         if (!email || !password) throw ({ message: `Incomplete/invalid data`, status: 400 })
 
         let user = await userModel.findOne({ "email.userEmail": email })
-
-        if (!user) throw ({ message: `user not found with email ${email}. Please register the user first.`, status: 404 })
+        if (!user) throw ({ message: `user not found with email ${email}. Please register first.`, status: 404 })
 
         let validPassword = await bcrypt.compare(password, user.password)
+        if (!validPassword) throw ({ message: `incorrect email/password !`, status: 401 })
 
-        if (!validPassword) throw ({ message: `incorret email/password !`, status: 401 })
+        let payload = { "email.userEmail": email }
+        let token = await jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "0.25hr" })
 
-        let playLoad = { "email.userEmail": email }
-
-        let token = await jwt.sign(playLoad
-            , process.env.JWT_SECRET_KEY, { expiresIn: "0.25hr" })
-
-        res.status(202).json({ message: "login successfull !", token })
-
+        res.status(202).json({ message: "login successful!", token })
 
     } catch (error) {
         console.log("error while login : ", error)
-        res.status(error.status || 401).json({ message: error.message || "unable to login at this moment. Please try again later !", error })
+        res.status(error.status || 401).json({ message: error.message || "unable to login at this moment. Please try again later!", error })
     }
 }
 
-export { handleUserRegister, handleOTPVerification, handleUserLogin }
+
+//  user reset request
+const handleResetPasswordRequest = async (req, res) => {
+    try {
+        let { email } = req.body
+
+        if (!email) throw ("invalid/incomplete data !")
+
+        let userExists = await userModel.findOne({ "email.userEmail": email })
+        if (!userExists) throw ("invalid email address / Please register first !")
+
+        let result = await sendOTPForPasswordReset(email)
+        if (!result.status) throw (`unable to send otp at ${email} | ${result.message}`)
+
+        res.status(201).json({ message: `An OTP sent to your email ${email}. It is valid for 5 minutes.` })
+
+    } catch (err) {
+        console.log("password reset request failed !", err)
+        res.status(400).json({ message: "password reset request failed !", err })
+    }
+}
+
+
+//verify otp and reset password
+const handleOTPForPasswordReset = async (req, res) => {
+    try {
+        let { email, userOtp, newPassword } = req.body
+
+        let emailExists = await userModel.findOne({ "email.userEmail": email })
+        if (!emailExists) throw (`email ${email} is not registered !`)
+
+        let storedOtp = await redisClient.get(`emailPasswordReset:${email}`)
+        if (!storedOtp) throw ("otp expired/not found !")
+        if (storedOtp != userOtp) throw ("invalid otp !")
+
+        let hash = await bcrypt.hash(newPassword, 10)
+        await userModel.updateOne({ "email.userEmail": email }, { $set: { "password": hash } })
+        redisClient.del(`emailPasswordReset:${email}`)
+
+        res.status(202).json({ message: "Password reset successfully. Please login with your new password!" })
+
+    } catch (err) {
+        console.log("error while verifying the otp for password reset : ", err)
+        res.status(500).json({ message: "Failed to reset password. Please try again later!", err })
+    }
+}
+
+export { handleUserRegister, handleOTPVerification, handleUserLogin, handleResetPasswordRequest, handleOTPForPasswordReset}
