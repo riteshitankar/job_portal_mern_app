@@ -22,12 +22,12 @@ const App = () => {
     formData.append('file', file);
     try {
       const response = await axios.post(
-        'http://localhost:5000/user/upload-file/resume',
+        'http://localhost:5000/company/upload-file/logo',
         formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': "token"
+            // 'Authorization': "token"
           }
         }
       );
