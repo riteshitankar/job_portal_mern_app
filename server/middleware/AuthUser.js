@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
-
+import {userModel} from "../models/userSchema.js"
 dotenv.config({ path: "./config.env" })
 
 const AuthUser = async (req, res, next) => {
@@ -30,4 +30,5 @@ const AuthUser = async (req, res, next) => {
     }
 }
 
-export { AuthUser }
+export default AuthUser
+// export { AuthUser }

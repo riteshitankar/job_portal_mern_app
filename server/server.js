@@ -8,6 +8,7 @@ import './database/conn.js'
 import {userRouter} from './routers/userRouter.js'
 import {companyRouter} from './routers/companyRouter.js'
 
+
 dotenv.config({path: "./config.env"})
 
 let app = express()

@@ -1,7 +1,6 @@
 import express from  'express'
 import {handleUserRegister, handleOTPVerification, handleUserLogin, handleResetPasswordRequest,handleOTPForPasswordReset } from '../controllers/userController.js'
 
-
 let userRouter = express.Router()
 
 userRouter.post("/register",handleUserRegister)
