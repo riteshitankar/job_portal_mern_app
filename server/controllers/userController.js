@@ -151,27 +151,44 @@ let handleOTPVerification = async (req, res) => {
 
 //user login 
 let handleUserLogin = async (req, res) => {
-    try {
-        let { email, password } = req.body
+  try {
+    let { email, password } = req.body;
 
-        if (!email || !password) throw ({ message: `Incomplete/invalid data`, status: 400 })
+    if (!email || !password)
+      throw { message: "Incomplete/invalid data", status: 400 };
 
-        let user = await userModel.findOne({ "email.userEmail": email })
-        if (!user) throw ({ message: `user not found with email ${email}. Please register first.`, status: 404 })
+    let user = await userModel.findOne({ "email.userEmail": email });
+    if (!user)
+      throw {
+        message: `User not found with email ${email}. Please register first.`,
+        status: 404,
+      };
 
-        let validPassword = await bcrypt.compare(password, user.password)
-        if (!validPassword) throw ({ message: `incorrect email/password !`, status: 401 })
+    let validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword)
+      throw { message: "Incorrect email/password!", status: 401 };
 
-        let payload = { "email.userEmail": email }
-        let token = await jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "0.25hr" })
+    let payload = { email };
 
-        res.status(202).json({ message: "login successful!", token })
+    // Token expiry: 15 minutes (or 0.25h)
+    let token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: "15m",
+    });
 
-    } catch (error) {
-        console.log("error while login : ", error)
-        res.status(error.status || 401).json({ message: error.message || "unable to login at this moment. Please try again later!", error })
-    }
-}
+    res.status(202).json({ message: "Login successful!", token });
+  } catch (error) {
+    console.log("Error while login:", error);
+    res
+      .status(error.status || 401)
+      .json({
+        message:
+          error.message ||
+          "Unable to login at this moment. Please try again later!",
+        error,
+      });
+  }
+};
+
 
 
 //  user reset request
@@ -220,4 +237,64 @@ const handleOTPForPasswordReset = async (req, res) => {
     }
 }
 
-export { handleUserRegister, handleOTPVerification, handleUserLogin, handleResetPasswordRequest, handleOTPForPasswordReset}
+
+let handleUserFileUpload = async (req, res) => {
+  try {
+    if (!req.file) throw new Error("Failed to upload a file!");
+
+    let fileName = req.file.filename;
+    let fileType = req.params.file_type; // 'resume' or 'profile_picture' or 'logo'
+
+    // Declare updateField before using it
+    let updateField;
+
+    if (fileType === "resume") {
+      updateField = { $push: { document: fileName } };
+    } else if (fileType === "profile_picture") {
+      updateField = { $set: { profile_picture: fileName } };
+    } 
+    else {
+      throw new Error("Invalid file type. Only 'resume', 'profile_picture', or 'logo' are allowed.");
+    }
+
+    // Update the user document
+    const result = await userModel.updateOne(
+      { "email.userEmail": req.user?.email?.userEmail },
+      updateField
+    );
+
+    if (result.modifiedCount === 0) {
+      throw new Error("User not found or file not saved.");
+    }
+
+    const uploadDest = `upload/${fileType}/${fileName}`;
+
+    res.status(202).json({
+      message: `${fileType === "resume" ? "Resume" : "Profile picture"} uploaded successfully!`,
+      fileName,
+      uploadDest,
+    });
+
+  } catch (err) {
+    console.error("Error in handleUserFileUpload:", err);
+    res.status(500).json({
+      message: "Failed to upload the file.",
+      error: err.message || err,
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export { handleUserRegister, handleOTPVerification, handleUserLogin, handleResetPasswordRequest, handleOTPForPasswordReset,handleUserFileUpload}

@@ -31,47 +31,9 @@ async function sendOTP(email) {
     let emailOptions = {
       from: process.env.COMPANY_EMAIL,
       to: email,
-      subject: "🔐 Verify Your Email Address | OTP valid for 5 mins",
-      html: `
-    <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f8; padding: 40px; border-radius: 10px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-      <div style="text-align: center; background: linear-gradient(135deg, #4a90e2, #0078ff); padding: 20px; border-radius: 10px 10px 0 0; color: #fff;">
-        <h2 style="margin: 0; font-size: 24px;">🔐 Email Verification</h2>
-      </div>
-
-      <div style="background: #ffffff; padding: 30px; border-radius: 0 0 10px 10px;">
-        <p style="font-size: 16px; color: #333; margin-bottom: 15px;">
-          Hi there 👋,
-        </p>
-        <p style="font-size: 16px; color: #333; line-height: 1.6;">
-          Thank you for joining <strong>JobStack</strong>!  
-          Please use the OTP below to verify your email address.
-        </p>
-
-        <div style="text-align: center; margin: 30px 0;">
-          <div style="display: inline-block; background: linear-gradient(135deg, #0078ff, #4a90e2); color: white; font-size: 26px; font-weight: bold; letter-spacing: 4px; padding: 15px 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-            ${otp}
-          </div>
-        </div>
-
-        <p style="font-size: 14px; color: #555; text-align: center;">
-          ⚠️ This OTP is valid for only <strong>5 minutes</strong>.  
-          Do not share it with anyone for your security.
-        </p>
-
-        <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
-
-        <p style="text-align: center;">
-          <a href="#" style="background: #0078ff; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">
-            Verify Email
-          </a>
-        </p>
-
-        <p style="font-size: 12px; color: #999; text-align: center; margin-top: 25px;">
-          © ${new Date().getFullYear()} <strong>JobStack</strong> | Secure Email Verification System
-        </p>
-      </div>
-    </div>
-  `}
+      subject: "Verify your company email ",
+      html : `<h1>Use the OTP <i>${otp}</i>to verify your company email | OTP valid for 5 mins</h1>`
+    }
 
     await transporter.sendMail(emailOptions)
 
@@ -93,39 +55,7 @@ async function sendOTPForPasswordReset(email) {
       from: process.env.COMPANY_EMAIL,
       to: email,
       subject: "Password Reset Request !",
-      html: `
-  <div style="max-width:600px;margin:auto;background:#fff;border-radius:10px;overflow:hidden;
-              font-family:'Segoe UI',Arial,sans-serif;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-    <div style="background:linear-gradient(135deg,#0078ff,#4a90e2);color:#fff;text-align:center;padding:25px;">
-      <h2 style="margin:0;font-size:22px;">🔐 Verify Your Email</h2>
-      <p style="margin:5px 0 0;font-size:14px;opacity:0.9;">Welcome to <strong>JobStack</strong>!</p>
-    </div>
-
-    <div style="padding:30px;text-align:center;color:#333;">
-      <p style="font-size:16px;">Hi there 👋,<br>Use the OTP below to verify your email address.</p>
-
-      <div style="margin:25px 0;">
-        <span style="display:inline-block;background:#0078ff;color:#fff;font-size:26px;font-weight:700;
-                     letter-spacing:4px;padding:15px 35px;border-radius:10px;">
-          ${otp}
-        </span>
-      </div>
-
-      <p style="font-size:14px;color:#666;">⚠️ OTP valid for <strong>5 minutes</strong>. Don’t share it with anyone.</p>
-
-      <a href="#" style="display:inline-block;margin-top:20px;background:#0078ff;color:#fff;
-                         padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;
-                         box-shadow:0 3px 6px rgba(0,0,0,0.15);">
-        Verify Email
-      </a>
-
-      <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-
-      <p style="font-size:12px;color:#999;">© ${new Date().getFullYear()} <strong>JobStack</strong><br>
-      Secure Email Verification System</p>
-    </div>
-  </div>
-`}
+      html: `<h1>Your password reset otp is ${otp} .</h1>`}
 
     await transporter.sendMail(emailOptions)
 
@@ -422,19 +352,15 @@ let handleCompanyFileUpload = async (req, res) => {
 
     let updateField = {}
 
-    if (fileType === "resume") {
-      updateField = { $push: { document: fileName } }
-    } else if (fileType === "profile_picture") {
-      updateField = { $set: { profile_picture: fileName } }
-    } else if (fileType === "logo") {
-      updateField = { $set: { company_logo: fileName } }
+    if (fileType === "logo") {
+      updateField = { $set: { company_logos: fileName } }
     } else {
-      throw new Error("Invalid file type. Only 'resume','profile_pictures' or 'company_logos' are allowed.");
+      throw new Error("Invalid file type. Only 'company_logos' is allowed.");
     }
 
     // Update the company document
     const result = await companyModel.updateOne(
-      { "email.companyEmail": req.company?.email?.companyEmail },
+      { "email.companyEmail": req.company.email.companyEmail },
       updateField
     );
 
@@ -445,11 +371,7 @@ let handleCompanyFileUpload = async (req, res) => {
     const uploadDest = `upload/${fileType}/${fileName}`;
 
     res.status(202).json({
-      message: `${fileType === "resume"
-        ? "resumes"
-        : fileType === "profile_picture"
-          ? "profile_pictures"
-          : fileType === "logo"
+      message: `${fileType === "logo"
             ? "company_logos"
             : "File"
         } uploaded successfully!`,
@@ -467,6 +389,12 @@ let handleCompanyFileUpload = async (req, res) => {
 
   }
 }
+
+
+
+
+
+
 
 export { handleCompanyRegister, handleOTPVerification, handleCompanyLogin }
 export { handleResetPasswordRequest, handleOTPForPasswordReset }

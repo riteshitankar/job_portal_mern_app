@@ -21,18 +21,11 @@ const storage = multer.diskStorage({
                 fileType === "resume"
                 ? "resumes"
                 : fileType === "profile_picture"
-                ? "Profile_pictures"
+                ? "profile_picture"
                 : fileType === "logo"
                 ? "company_logos" : "upload"
             )
-
-        // let uploadPath = path.join
-        //     (
-        //         "upload",
-        //         fileType === "resume" ? "resumes" : "profile_pictures"
-        //     )
-
-        // uploads/profile_picture 
+    
 
         cb(null, uploadPath)
 

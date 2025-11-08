@@ -2,7 +2,8 @@
 import express, {Router} from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import './database/conn.js'
+// import './database/conn.js'
+import "./database/conn.js"
 
 // import routers
 import {userRouter} from './routers/userRouter.js'

@@ -6,7 +6,8 @@ dotenv.config({path : './config.env'})
 
 const AuthCompany = async (req,res,next) => {
     try{
-        let companyToken = req.header.token
+        let companyToken = req.headers.authorization;
+
         
         if (!companyToken) throw ('token not found or invalid')
 
@@ -16,7 +17,6 @@ const AuthCompany = async (req,res,next) => {
 
         if(!company) throw ('Company not found')
         
-        if(!company) throw ('Company not found')
         
         if(!company.email.verified) throw ("Email not verified. Please verify first")
 

@@ -4,7 +4,7 @@ import {handleCompanyRegister, handleOTPVerification,handleCompanyLogin,handleRe
 
 import {handleCompanyFileUpload} from "../controllers/companyController.js"
 
-// import AuthCompany from "../middlewares/AuthCompany.js"
+import AuthCompany from "../middleware/AuthCompany.js"
 
 import { upload } from "../config/multerConfig.js"
 
@@ -22,11 +22,11 @@ companyRouter.post("/password-reset-request",handleResetPasswordRequest)
 
 companyRouter.post("/verify-reset-password-request",handleOTPForPasswordReset)
 
-companyRouter.patch("/old-password-newPassword",handleResetPasswordRequestOldToNew )
+companyRouter.patch("/old-password-newPassword",handleResetPasswordRequestOldToNew)
 
 // to upload resume/profie/docs we need to verfiy the user
 
-companyRouter.post("/upload-file/:file_type", upload.single("file"),handleCompanyFileUpload )
+companyRouter.post("/upload-file/:file_type", AuthCompany,upload.single("file"),handleCompanyFileUpload)
 
 
 export {companyRouter}

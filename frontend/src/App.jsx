@@ -27,7 +27,10 @@ const App = () => {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            // 'Authorization': "token"
+            // for user
+            // 'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJpdGVzaGl0YW5rYXI3NkBnbWFpbC5jb20iLCJpYXQiOjE3NjI1NzgwNzMsImV4cCI6MTc2MjU3ODk3M30.R5kqTf2oI019NFMnSAg9PVHWoN7WwMt0fVR7NAKJruo"
+            // for company
+            'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJpdGVzaGl0YW5rYXI5OUBnbWFpbC5jb20iLCJpYXQiOjE3NjI1ODU0MjcsImV4cCI6MTc2MjY3MTgyN30.eshgbowwZ3PE3ey7IDfce5dFUK_azBAZGQ9PPpinR-A"
           }
         }
       );

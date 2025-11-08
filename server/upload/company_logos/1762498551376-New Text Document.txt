@@ -1,0 +1,79 @@
+Hi ChatGPT, I am going to apply for Capgemini (for the role of CSG IT Enablers Contact Support Group), Generate the 1 page resume from the following details: 
+
+RITESH LAXMAN ITANKAR
+riteshitankar99@gmail.com | (+91)8767960965
+LinkedIN: https://www.linkedin.com/in/ritesh-itankar/ 
+Github: https://github.com/riteshitankar
+Website: https://portfolio-seven-sigma-nfknbblm1d.vercel.app/ 
+Address: Nagpur, Maharashtra, India
+Education:
+Priyadarshini College of Engineering, Nagpur, Maharashtra 
+Bachelor of Technology in Industrial Internet of Things | Year of Passing: 2025 | CGPA: 7.80
+Ashok Junior College, Umred, Nagpur, Maharashtra 
+Class: 12th | Year of Passing: 2021 | Percentage: 83.17% 
+Jeevan Vikas Vidyalaya, Umred, Nagpur, Maharashtra 
+Class: 10th | Year of Passing: 2019 | Percentage: 72.20%
+Skills: Python(basic) HTML, CSS, JS, BOOTSTRAP, Tailwind, NodeJS, ExpressJS, MongoDB, ReactJS, Git, Replit
+Experience:
+Electus Technologies Pvt. Ltd., Nagpur, Maharashtra | Trainee | February - March 2023 Hands-on experience in embedded systems and IoT.
+Cognifyz Technologies, Nagpur, Maharashtra | Web Dev. Intern | December 2023 – January 2024 Developed and maintained web applications using modern web technologies.
+Wide SoftTech Pvt. Ltd, Nagpur, Maharashtra | Web Dev. Intern | June 2025 – Till now exploring new stuff related to the MERN Stack and modern tools for development. Also understanding how to build real-life project.
+Projects
+Bluetooth Controlled Car Using Arduino Uno  	Aug 2022 - Nov 2022
+Plant Monitoring System Using Arduino Uno 	Feb 2023 - Apr 2023
+RFID and Password Door Lock System 		Feb 2023 - Apr 2023
+Student Rental Room Booking Platform 		November 2021 – January 2022
+Intelligent Pet Feeder with Real-Time Camera Monitoring 	October 2024 – January 2025
+Portfolio Projects					July 2025 – August 2025
+QR Code Generator					October 2025 – October 2025
+Notepad	October 2025 – October 2025
+To-Do List						September 2025 – September 2025
+Certifications 
+Web Development, Internshala Trainings 
+Certificate No.: 3724550C-3206-A530-721D-447C71F536F0 | 11/01/2022
+
+Copyrights 
+DHT Sensor: Its Working and Real-World Applications 
+RoC No.: L-147035/2024 | 15/03/2024 
+The Evolution and Impact of Speech Recognition using Machine Learning 
+RoC No.: L-140063/2023 | 07/11/2023
+
+
+
+
+Programming: Python (Basic)
+Web Technologies: HTML, CSS, JavaScript, Bootstrap, Tailwind CSS
+Frameworks & Libraries: ReactJS, NodeJS, ExpressJS
+Database: MongoDB
+Tools: Git, Replit
+Soft Skills: Problem Solving, Communication, Collaboration, Adaptability
+
+
+
+Projects
+Bluetooth Controlled Car Using Arduino Uno — Remote vehicle control system.
+Plant Monitoring System Using Arduino Uno — Smart plant monitoring.
+RFID & Password Door Lock System — Secure IoT-based access control.
+Student Rental Room Booking Platform — Web app for student accommodations.
+Intelligent Pet Feeder with Real-Time Camera Monitoring — IoT-based automation system.
+Portfolio Projects, QR Code Generator, Notepad, To-Do List — Full-stack and utility applications (2025)
+
+
+
+
+
+
+
+
+
+Projects
+Bluetooth Controlled Car Using Arduino Uno — Remote vehicle control system.
+Plant Monitoring System Using Arduino Uno — Smart agriculture monitoring.
+RFID & Password Door Lock System — Secure IoT-based access control.
+Student Rental Room Booking Platform — Web app for student accommodations.
+Intelligent Pet Feeder with Real-Time Camera Monitoring — IoT-based automation system.
+Portfolio Projects, QR Code Generator, Notepad, To-Do List — Full-stack and utility applications (2025).
+
+
+
+Enthusiastic B.Tech graduate in Industrial Internet of Things, aiming to contribute to a dynamic organization by utilizing my skills in web development, IoT, and system support while continuing to learn and grow professionally.
