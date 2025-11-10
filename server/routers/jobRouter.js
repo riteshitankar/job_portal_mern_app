@@ -1,20 +1,19 @@
 import express from "express"
 
 import { createJob, getJobData, handleJobAction, handleJobApplication,handleJobUpdate} from "../controllers/jobController.js"
-import { AuthUser } from "../middlewares/AuthUser.js"
-import { AuthCompany} from "../middlewares/AuthCompany.js"
+import  AuthUser  from "../middleware/AuthUser.js"
+import  AuthCompany from "../middleware/AuthCompany.js"
 
 const jobRouter = express.Router()
 
-jobRouter.post("/add-job", AuthCompany, createJob)
+jobRouter.post("/createjob", AuthCompany, createJob)
 
-jobRouter.post("/job-update/:jobId",AuthCompany,handleJobUpdate)
+jobRouter.post("/jobupdate/:jobId",AuthCompany,handleJobUpdate)
 
-jobRouter.post("/job-action/:action/:jobId", AuthCompany,handleJobAction)
-// action:1)delete 2)closed
+jobRouter.post("/jobaction/:action/:jobId", AuthCompany,handleJobAction)
 
-jobRouter.post("/apply-for-job/:jobId", AuthUser, handleJobApplication)
+jobRouter.post("/jobapply/:jobId", AuthUser, handleJobApplication)
 
-jobRouter.get("/get-jobs", getJobData)
+jobRouter.get("/getjob", getJobData)
 
 export { jobRouter }

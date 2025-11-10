@@ -22,7 +22,7 @@ let createJob = async (req, res) => {
 
         let result = await newJob.save()
 
-        // add job id to company data [createdJobs]
+        // add a job id on the company
         console.log(result)
 
         let updateCompany = companyModel.findByIdAndUpdate(company._id, { $push: { "createdJobs": result.insertedId } })
@@ -37,7 +37,7 @@ let createJob = async (req, res) => {
     }
 }
 
-// actions a job
+// actions on job
 let handleJobAction = async (req, res) => {
     try {
 

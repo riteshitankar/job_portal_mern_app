@@ -1,0 +1,20 @@
+:root {
+    --light: 239, 236, 227;
+    --secondary: 143, 171, 212;
+    --primary: 74, 112, 169;
+    --dark: 0, 0, 0;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.content-container {
+    padding: 1rem 7rem;
+}
+
+@media screen and (max-width: 990px) {
+    .content-container {
+        padding: 0.15rem 0.5rem;
+    }
+}

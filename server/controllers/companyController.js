@@ -7,7 +7,7 @@ import { redisClient } from "../utils/redisClient.js"
 
 dotenv.config({ path: "./config.env" })
 
-// to send a email we need a transporter 
+// to send a email, need a transporter 
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',   // Gmail SMTP
@@ -27,7 +27,7 @@ async function sendOTP(email) {
   try {
     let otp = generateRandomNumber()
 
-    // style otp 
+    // otp content
     let emailOptions = {
       from: process.env.COMPANY_EMAIL,
       to: email,
@@ -103,7 +103,6 @@ let handleCompanyRegister = async (req, res) => {
 
     if (!result.status) throw (`unable to send otp at ${email} | ${result.message}`)
 
-    // create company object
 
     // encrypt password before saving
 

@@ -8,6 +8,7 @@ import "./database/conn.js"
 // import routers
 import {userRouter} from './routers/userRouter.js'
 import {companyRouter} from './routers/companyRouter.js'
+import { jobRouter } from './routers/jobRouter.js'
 
 
 dotenv.config({path: "./config.env"})
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 });
 app.use("/user",userRouter)
 app.use("/company",companyRouter)
+app.use("/job",jobRouter)
 
 app.use((req,res) => {
     console.log('user trying to access invalid route!')
