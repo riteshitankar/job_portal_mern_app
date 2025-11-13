@@ -1,14 +1,19 @@
-import React from 'react'
-import Header from '../sections/includes/Header'
-import Footer from '../sections/includes/Footer'
-import UserLoginRegisterForm from '../sections/UserLoginRegisterForm'
+import React from "react";
+
+import UserLoginRegisterForm from '../sections/UserLoginRegisterForm.jsx'
+
+// header and footer
+import Header from '../sections/sections/includes/Header.jsx'
+import Footer from '../sections/sections/includes/Footer.jsx'
+
 
 const UserLoginRegister = () => {
-    return (
+    return(
         <>
-            <Header />
-            <UserLoginRegisterForm />
-            <Footer />
+        <Header />
+        {/* actual registration form */}
+        <UserLoginRegisterForm />
+        <Footer />
         </>
     )
 }

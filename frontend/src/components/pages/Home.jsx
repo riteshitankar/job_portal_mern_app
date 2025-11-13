@@ -1,13 +1,14 @@
-import React from 'react'
+import React from "react";
 
-import Header from '../sections/includes/Header'
-import Footer from '../sections/includes/Footer'
+// header and footer
+import Header from '../sections/sections/includes/Header.jsx'
+import Footer from '../sections/sections/includes/Footer.jsx'
 
 const Home = () => {
-    return (
+    return(
         <>
-            <Header />
-            <Footer />
+        <Header />
+        <Footer />
         </>
     )
 }
