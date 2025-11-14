@@ -1,0 +1,42 @@
+#message {
+    position: fixed;
+    left: 50%;
+    top: 2rem;
+    min-width: 300px;
+    transform: translate(-50%, 0);
+    border-radius: 14px;
+    z-index: 9999999;
+    padding: 1rem;
+
+    background-color: black;
+    color: white;
+    animation: slideDown 0.25s ease 1;
+
+    &.warning {
+        background-color: rgb(255, 196, 0);
+        color: black;
+    }
+
+    &.danger {
+        background-color: rgba(223, 50, 7, 0.938);
+        color: white;
+    }
+
+    &.success {
+        background-color: rgb(4, 121, 33);
+        color: white;
+    }
+
+    @keyframes slideDown {
+        0% {
+            top: 0rem;
+            opacity: 0;
+        }
+
+        100% {
+            top: 2rem;
+            opacity: 1;
+        }
+    }
+
+}

@@ -70,9 +70,13 @@ async function sendOTPForPasswordReset(email) {
 // user registration
 let handleUserRegister = async (req, res) => {
     try {
-        let { name, phone, email, address, dob, password, qualifications } = req.body
+        let { name, phone, email, street, city, state, country, pincode, dob, password } = req.body
 
-        if (!name || !phone || !email || !address || !dob || !password || !qualifications) throw ("invalid/missing data !")
+
+
+        if (!name || !phone || !email || !street || !city || !state || !country || !pincode || !dob || !password) throw ("invalid/missing data !")
+
+
 
         // check if user exits
         let checkIfUserExits = await userModel.findOne({
@@ -95,7 +99,11 @@ let handleUserRegister = async (req, res) => {
         // create user object
 
         // encrypt password
-        let newUser = new userModel({ name, phone, email: emailObject, address, dob, qualifications, password })
+        // let newUser = new userModel({ name, phone, email: emailObject, address, dob, qualifications, password })
+
+        let newUser = new userModel({ name, phone, email: emailObject, address, dob, password })
+
+
 
         // save user object
         await newUser.save();
@@ -204,6 +212,10 @@ const handleResetPasswordRequest = async (req, res) => {
         let result = await sendOTPForPasswordReset(email)
         if (!result.status) throw (`unable to send otp at ${email} | ${result.message}`)
 
+           let address = {
+            street, city, state, country, pincode
+        }
+
         res.status(201).json({ message: `An OTP sent to your email ${email}. It is valid for 5 minutes.` })
 
     } catch (err) {
@@ -293,8 +305,25 @@ let handleUserFileUpload = async (req, res) => {
 
 
 
+const fetchProfile = async (req, res) => {
+    try {
+        let user = req.user
+
+        let userData = await userModel.findOne({ "email.userEmail": user.email.userEmail })
+
+        if (!userData) throw ("unable to load user profile !")
+
+        res.status(200).json({ message: "got user profile data !", userData })
+
+    } catch (err) {
+        console.log("unable to user profile : ", err)
+        res.state(401).json({ message: "unable to send user profile data !", err })
+    }
+}
+
+export { handleUserRegister, handleOTPVerification, handleUserLogin, handleResetPasswordRequest, handleOTPForPasswordReset, handleUserFileUpload, fetchProfile }
 
 
 
 
-export { handleUserRegister, handleOTPVerification, handleUserLogin, handleResetPasswordRequest, handleOTPForPasswordReset,handleUserFileUpload}
+// export { handleUserRegister, handleOTPVerification, handleUserLogin, handleResetPasswordRequest, handleOTPForPasswordReset,handleUserFileUpload}

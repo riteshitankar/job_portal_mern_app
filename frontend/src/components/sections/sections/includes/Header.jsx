@@ -22,7 +22,7 @@ const Header = () => {
             <div className='content-container bg-dark'>
                 <div className='content text-light flex justify-between items-center'>
                     <div className='logo flex gap-2 items-center cursor-pointer' onClick={() => navigate("/")}>
-                        <MdWorkspacesOutline size={30} />
+                        <MdWorkspacesOutline size={35} />
                         <span className='bg-dark text-primary text-[1.25rem] font-bold'>
                             JOB CHAIYE ?
                         </span>
